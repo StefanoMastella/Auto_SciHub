@@ -1,10 +1,7 @@
 # Auto_SciHub
 Type keywords and the script will automatically download dozens articles from Google Scholar.
 
-## YouTube Tutorial 
-
-[<img src="README Images/tutorial_screenshot.PNG">](https://www.youtube.com/watch?v=_loZrHiwyes&ab_channel=OneiroAcoustika)
-> https://www.youtube.com/watch?v=_loZrHiwyes&ab_channel=OneiroAcoustika
+![Alt text](images/Demonstration.gif)
 
 ## 💻 Requirements
 
@@ -13,7 +10,9 @@ Type keywords and the script will automatically download dozens articles from Go
 
 ## ☕ How to use
 
-blah
+Change the variables "keywords" and "scholar_pages" to your specific needs. 
+
+When running the script Google Scholar might require a Captcha. In this case manually solve it and run the main cell to surpass this anti-bot barrier.
 
 ## 📝 License
 
