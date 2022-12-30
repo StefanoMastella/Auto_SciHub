@@ -1,5 +1,8 @@
 """
-Automação web
+Web Scrape tool created to download dozens of articles from Google Scholar. 
+It breaks paywalls using Sci Hub.
+
+Created by Stéfano Mastella
 """
 #%% Settings
 from selenium import webdriver
@@ -10,49 +13,43 @@ import pyautogui as pyag
 import numpy as np
 import re
 
+# Set up Chrome web driver
 brow = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
-palavras_chave='speech regocnition acoustics machine learning'
+# Define keywords to search for on Google Scholar
+keywords='speech regocnition acoustics machine learning'
+# Define number of pages to search through on Google Scholar
 scholar_pages = 3
 
-#%% 
-
+#%% Navigate to Google Scholar and perform search with defined keywords
 brow.get('https://scholar.google.com.br/')
 brow.find_element('xpath',
-                  '/html/body/div/div[7]/div[1]/div[2]/form/div/input').send_keys(palavras_chave)
+                  '/html/body/div/div[7]/div[1]/div[2]/form/div/input').send_keys(keywords)
 brow.find_element('xpath',
                   '//*[@id="gs_hdr_tsb"]/span/span[1]').click()
 
-links = []
+#%% Main loops (run only this cell in case Google Scholar requires Captcha)
 
-for n in range(scholar_pages):
-    if n == 0:
-        links = brow.find_elements(By.TAG_NAME,'h3')
-    else:
-        new_links = brow.find_elements(By.TAG_NAME,'h3')
-        for element in new_links:
-            links.append(element)
-    
-    brow.find_element('xpath',
-                      '//*[@id="gs_n"]/center/table/tbody/tr/td[12]/a/b').click()
+# Empty lists for furthe processing
+links = []; article_titles = []
 
-titulos_artigos = []
-
+# Get the artile titles to be cracked by SciHub in the next loop
 for n in range(scholar_pages):
     # Find the h3 elements on the current page
     links = brow.find_elements(By.TAG_NAME,'h3')
     
     # Extract the text from the elements and add it to the titulos_artigos list
     for link in links:
-        titulos_artigos.append(link.text)
+        article_titles.append(link.text)
     
     # Click the next page button
     brow.find_element('xpath',
                       '//*[@id="gs_n"]/center/table/tbody/tr/td[12]/a/b').click()
 
-for link in range(np.size(titulos_artigos)):
+# Download the articles
+for link in range(np.size(article_titles)):
     try:
-        title = re.sub("[\(\[].*?[\)\]]", "", titulos_artigos[n])
+        title = re.sub("[\(\[].*?[\)\]]", "", article_titles[n])
         # time.sleep(2)
         brow.get('https://sci-hub.se/')
         brow.find_element('xpath',
@@ -61,12 +58,12 @@ for link in range(np.size(titulos_artigos)):
         brow.find_element('xpath',
                           '/html/body/div[3]/div[1]/button').click()
         n=n+1
-        print(f'Artigo baixado com sucesso: {title}\n')
+        print(f'Article downloaded successfully: {title}\n')
     except:
         n=n+1
-        print(f'Não foi possível baixar o arquivo: {title}\n')
+        print(f'Unable to download file: {title}\n')
         pass
 
 #%% Close window
-input('Aperte qualquer tecla para fechar o navegador')
+input('Press any button to close the browser')
 brow.close()
