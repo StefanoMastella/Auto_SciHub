@@ -9,7 +9,7 @@ Type keywords and the script will automatically download dozens articles from Go
 ## 💻 Requirements
 
 - [Selenium](https://selenium-python.readthedocs.io/) 
-- [Other Stuff](https://www.pjrc.com/teensy/td_download.html)
+- [PyAutoGUI](https://pyautogui.readthedocs.io/en/latest/)
 
 ## ☕ How to use
 
